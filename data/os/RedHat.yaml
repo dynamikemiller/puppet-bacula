@@ -16,8 +16,8 @@ bacula::director::packages:
   - 'bacula-console'
 bacula::client::packages: 'bacula-client'
 
-bacula_director_services: [ 'bacula-dir' ]
-bacula_storage_services: [ 'bacula-sd' ]
+bacula::director::services: [ 'bacula-dir' ]
+bacula::storage::services: 'bacula-sd'
 bacula::client::services: 'bacula-fd'
 bacula::conf_dir: '/etc/bacula'
 bacula_dir: '/etc/bacula/ssl'
