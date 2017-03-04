@@ -23,10 +23,8 @@ define bacula::director::storage (
   $device_name   = "${::fqdn}-device",
   $media_type    = 'File',
   $maxconcurjobs = '1',
-  $conf_dir      = $bacula::params::conf_dir, # Overridden at realize
+  $conf_dir      = $::bacula::conf_dir
 ) {
-
-  include bacula::params
 
   concat::fragment { "bacula-director-storage-${name}":
     target  => "${conf_dir}/conf.d/storage.conf",

@@ -2,17 +2,14 @@ require 'spec_helper'
 
 describe 'bacula::storage' do
   on_supported_os.each do |os, facts|
-    let(:facts) { facts }
     context "on #{os}" do
+      let(:facts) { facts }
 
       it { should contain_class('bacula::storage') }
 
       case facts[:osfamily]
       when 'Debian'
       when 'RedHat'
-        require 'pp'
-        pp facts[:os]['name']
-        pp facts[:os]['release']['major']
         case facts[:operatingsystemmajrelease]
         when '6'
           it { should contain_package('bacula-storage-common').with(

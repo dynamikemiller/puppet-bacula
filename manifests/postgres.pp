@@ -15,10 +15,10 @@
 #
 define bacula::postgres {
 
-  include bacula::params
-  include bacula::postgres::resources
+  include ::bacula
+  include ::bacula::postgres::resources
 
-  $homedir = $bacula::params::homedir
+  $homedir = $bacula::homedir
 
   cron { "bacula_postgres_${name}":
     command => "/bin/su -l postgres -c '/usr/bin/pg_dump ${name} --blobs --format=plain --create' | /bin/cat > ${homedir}/postgres/${name}.sql",

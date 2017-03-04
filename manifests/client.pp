@@ -2,46 +2,61 @@
 #
 # This class installs and configures the File Daemon to backup a client system.
 #
-# Sample Usage:
+# @example
+#   class { 'bacula::client': director_name => 'mydirector.example.com' }
 #
-#   class { 'bacula::client': director => 'mydirector.example.com' }
+# @param port The listening port for the File Daemon
+# @param listen_address
+# @param password
+# @param max_concurrent_jobs
+# @param packages
+# @param services
+# @param director_name
+# @param storage
+# @param config_file
+# @param autoprune
+# @param file_retention
+# @param job_retention
+# @param client
+# @param default_pool
+# @param default_pool_full
+# @param default_pool_inc
+# @param default_pool_diff
 #
 class bacula::client (
-  $port                = '9102',
-  $listen_address      = $::ipaddress,
-  $password            = 'secret',
-  $max_concurrent_jobs = '2',
   String $packages,
   String $services,
-  $director            = $bacula::params::director,
-  $storage             = $bacula::params::storage,
-  $config_file,
+  String $port         = '9102',
+  $listen_address      = $facts['ipaddress'],
+  $password            = 'secret',
+  $max_concurrent_jobs = '2',
+  $director_name       = $bacula::director,
+  $storage             = $bacula::storage,
   $autoprune           = 'yes',
-  $file_retention = '45 days',
-  $job_retention  = '6 months',
+  $file_retention      = '45 days',
+  $job_retention       = '6 months',
   $client              = $::fqdn,
   $default_pool        = 'Default',
   $default_pool_full   = undef,
   $default_pool_inc    = undef,
   $default_pool_diff   = undef,
-) inherits bacula::params {
-
-  include ::bacula
+) inherits bacula {
 
   $group    = $::bacula::bacula_group
   $conf_dir = $::bacula::conf_dir
+  $config_file = "${conf_dir}/bacula-fd.conf"
 
   package { $packages:
     ensure => present,
   }
 
   service { $services:
-    ensure    => running,
-    enable    => true,
-    require   => Package[$packages],
+    ensure  => running,
+    enable  => true,
+    require => Package[$packages],
   }
 
-  if $::bacula::ssl {
+  if $::bacula::use_ssl {
     include ::bacula::ssl
     Service[$services] {
       subscribe => File[$::bacula::ssl::ssl_files],
@@ -64,7 +79,7 @@ class bacula::client (
 
   bacula::messages { 'Standard-fd':
     daemon   => 'fd',
-    director => "${director}-dir = all, !skipped, !restored",
+    director => "${director_name}-dir = all, !skipped, !restored",
     append   => '"/var/log/bacula/bacula-fd.log" = all, !skipped',
   }
 
@@ -76,6 +91,6 @@ class bacula::client (
     autoprune      => $autoprune,
     file_retention => $file_retention,
     job_retention  => $job_retention,
-    tag            => "bacula-${::bacula::params::director}",
+    tag            => "bacula-${director_name}",
   }
 }

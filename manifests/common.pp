@@ -2,8 +2,8 @@
 #
 # == Description
 #
-# This class configures and installs the bacula client packages and enables
-# the service, so that bacula jobs can be run on the client including this
+# This class configures and installs the bacula client packages and enables the
+# service, so that bacula jobs can be run on the client including this
 # manifest.
 #
 class bacula::common {
@@ -17,13 +17,13 @@ class bacula::common {
   $bacula_group    = $::bacula::bacula_group
   $homedir         = $::bacula::homedir
   $homedir_mode    = $::bacula::homedir_mode
-  $client_packages = $::bacula::client::packages
+  $client_package  = $::bacula::client::packages
 
   File {
     ensure  => directory,
     owner   => $bacula_user,
     group   => $bacula_group,
-    require => Package[$client_packages],
+    require => Package[$client_package],
   }
 
   file { $homedir:

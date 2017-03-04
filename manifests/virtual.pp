@@ -9,9 +9,17 @@ class bacula::virtual {
 
   $director_packages = lookup('bacula::director::packages')
   $storage_packages  = lookup('bacula::storage::packages')
+  $db_type = lookup('bacula::director::db_type')
   $packages          = ($director_packages + $storage_packages).unique
 
-  @package { $packages:
-    ensure => present
+  $packages.each |$p| {
+    $package_name = inline_epp($p, {
+      'db_type' => $db_type
+    })
+
+    @package { $package_name:
+      ensure => present
+    }
   }
+
 }

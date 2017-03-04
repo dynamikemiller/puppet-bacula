@@ -2,58 +2,74 @@
 #
 # This class installs and configures the Bacula Backup Director
 #
-# Parameters:
-# * db_user: the database user
-# * db_pw: the database user's password
-# * db_name: the database name
-# * password: password to connect to the director
+# @param port The listening port for the Director
+# @param db_user: the database user
+# @param db_pw: the database user's password
+# @param db_name: the database name
+# @param password: password to connect to the director
 #
-# Sample Usage:
-#
+# @example
 #   class { 'bacula::director':
 #     storage => 'mystorage.example.com'
 #   }
 #
 class bacula::director (
-  $conf_dir            = $bacula::params::conf_dir,
-  $db_name             = $bacula::params::bacula_user,
-  $db_pw               = 'notverysecret',
   $db_type,
-  $db_user             = $bacula::params::bacula_user,
-  $director_address    = $bacula::params::director_address,
-  $director            = $::fqdn, # director here is not params::director
-  $group               = $bacula::params::bacula_group,
-  $homedir             = $bacula::params::homedir,
-  $job_tag             = $bacula::params::job_tag,
+  $messages,
+  Array $packages,
+  String $services,
+  $conf_dir            = $bacula::conf_dir,
+  $db_name             = $bacula::bacula_user,
+  $db_pw               = 'notverysecret',
+  $db_user             = $bacula::bacula_user,
+  $director_address    = $bacula::director_address,
+  $director            = $::fqdn, # director here is not bacula::director
+  $group               = $bacula::bacula_group,
+  $homedir             = $bacula::homedir,
+  $job_tag             = $bacula::job_tag,
   $listen_address      = $::ipaddress,
   $max_concurrent_jobs = '20',
-  $messages,
   $password            = 'secret',
   $port                = '9101',
-  $rundir              = $bacula::params::rundir,
-  $services            = $bacula::params::bacula_director_services,
-  $storage             = $bacula::params::storage,
-) inherits bacula::params {
+  $rundir              = $bacula::rundir,
+  $storage             = $bacula::storage,
+) inherits ::bacula {
 
-  include ::bacula::common
-  include ::bacula::client
-  include ::bacula::ssl
   include ::bacula::director::defaults
 
   case $db_type {
-    /^(pgsql|postgresql)$/: { include bacula::director::postgresql }
-    'none': { }
+    /^(pgsql|postgresql)$/: { include ::bacula::director::postgresql }
+    /^(mysql)$/:            { include ::bacula::director::postgresql }
+    'none':                 { }
     default:                { fail('No db_type set') }
   }
 
-  package { $packages: }
+  # Packages are virtual due to some platforms shipping the SD and Dir as
+  # part of the same package.
+  include bacula::virtual
+
+  # Allow for package names to include EPP syntax for db_type
+  $packages.each |$p| {
+    $package_name = inline_epp($p, {
+      'db_type' => $db_type
+    })
+
+    realize(Package[$package_name])
+  }
 
   service { $services:
-    ensure    => running,
-    enable    => true,
-    subscribe => File[$bacula::ssl::ssl_files],
-    require   => Package[$packages],
+    ensure  => running,
+    enable  => true,
+    require => Package[$packages],
   }
+
+  if $::bacula::use_ssl {
+    include ::bacula::ssl
+    Service[$services] {
+      subscribe => File[$::bacula::ssl::ssl_files],
+    }
+  }
+
 
   file { "${conf_dir}/conf.d":
     ensure => directory,
@@ -77,13 +93,13 @@ class bacula::director (
   concat::fragment { 'bacula-director-header':
     order   => '00',
     target  => "${conf_dir}/bacula-dir.conf",
-    content => template('bacula/bacula-dir-header.erb')
+    content => template('bacula/bacula-dir-header.erb'),
   }
 
   concat::fragment { 'bacula-director-tail':
     order   => '99999',
     target  => "${conf_dir}/bacula-dir.conf",
-    content => template('bacula/bacula-dir-tail.erb')
+    content => template('bacula/bacula-dir-tail.erb'),
   }
 
   create_resources(bacula::messages, $messages)
@@ -93,10 +109,10 @@ class bacula::director (
   Bacula::Director::Client <<| tag == "bacula-${director}" |>> { conf_dir => $conf_dir }
 
   if !empty($job_tag) {
-    Bacula::Fileset <<| tag == $job_tag |>> { conf_dir => $conf_dir }
+    Bacula::Director::Fileset <<| tag == "bacula-${director}" |>> { conf_dir => $conf_dir }
     Bacula::Director::Job <<| tag == $job_tag |>> { conf_dir => $conf_dir }
   } else {
-    Bacula::Fileset <<||>> { conf_dir => $conf_dir }
+    Bacula::Director::Fileset <<||>> { conf_dir => $conf_dir }
     Bacula::Director::Job <<||>> { conf_dir => $conf_dir }
   }
 
@@ -125,7 +141,7 @@ class bacula::director (
     show_diff => false,
   }
 
-  bacula::fileset { 'Common':
+  bacula::director::fileset { 'Common':
     files => ['/etc'],
   }
 

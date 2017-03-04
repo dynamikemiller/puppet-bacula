@@ -17,14 +17,12 @@ certfile: "%{hiera('bacula::conf_dir')}/ssl/${::clientcert}_cert.pem"
 keyfile: "%{conf_dir}/ssl/${::clientcert}_key.pem"
 cafile: "%{conf_dir}/ssl/ca.pem"
 
-bacula::params::storage: '%{trusted.certname}'
-bacula::params::director: '%{trusted.certname}'
-bacula::params::director_address: '%{trusted.certname}'
-bacula::params::job_tag: ''
+bacula::storage::services: 'bacula-sd'
+bacula::storage: '%{trusted.certname}'
+
+bacula::director: '%{trusted.certname}'
+bacula::director_address: '%{trusted.certname}'
+bacula::job_tag: ''
 
 bacula::client::services: 'bacula-fd'
-
-bacula::storage::port: '9103'
-bacula::storage::services: 'bacula-sd'
-
 

@@ -65,7 +65,7 @@ define bacula::job (
   $restoredir          = '/tmp/bacula-restores',
   $sched               = false,
   $priority            = false,
-  $job_tag             = $bacula::params::job_tag,
+  $job_tag             = $bacula::job_tag,
   $selection_type      = undef,
   $selection_pattern   = undef,
 ) {
@@ -73,8 +73,7 @@ define bacula::job (
   validate_re($accurate, ['^yes', '^no'])
 
   include bacula::common
-  include bacula::params
-  $conf_dir = $bacula::params::conf_dir
+  $conf_dir = $bacula::conf_dir
 
   # if the fileset is not defined, we fall back to one called "Common"
   if is_string($fileset) {
@@ -82,18 +81,20 @@ define bacula::job (
   } elsif $fileset == true {
     if $files == '' { err('you tell me to create a fileset, but no files given') }
     $fileset_real = $name
-    bacula::fileset { $name:
+
+    @@bacula::director::fileset { $name:
       files    => $files,
       excludes => $excludes
-      }
+    }
+
   } else {
     $fileset_real = 'Common'
   }
 
   if empty($job_tag) {
-    $real_tags = "bacula-${::bacula::params::director}"
+    $real_tags = "bacula-${::bacula::director}"
   } else {
-    $real_tags = ["bacula-${::bacula::params::director}", $job_tag]
+    $real_tags = ["bacula-${::bacula::director}", $job_tag]
   }
 
   @@bacula::director::job { $name:

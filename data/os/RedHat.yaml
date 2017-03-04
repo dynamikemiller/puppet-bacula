@@ -8,7 +8,7 @@ bacula::director::packages:
   - 'bacula-console'
 bacula::client::packages: 'bacula-client'
 
-bacula::director::services: [ 'bacula-dir' ]
+bacula::director::services: 'bacula-dir'
 bacula::storage::services: 'bacula-sd'
 bacula::client::services: 'bacula-fd'
 bacula::conf_dir: '/etc/bacula'

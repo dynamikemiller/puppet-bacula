@@ -2,7 +2,7 @@
 #
 # Configures bacula storage daemon
 #
-# @param port String port to bind
+# @param port The listening port for the Storage Daemon
 # @param listen_address INET or INET6 address to listen on
 # @param storage
 # @param device_password
@@ -17,14 +17,14 @@
 # @param rundir
 # @param conf_dir
 # @param rundir
-# @param director
+# @param director_name
 # @param user
 # @param group
 #
 class bacula::storage (
-  String $port,
   String $services,
   String $packages,
+  String $port = '9103',
   $listen_address          = $facts['ipaddress'],
   $storage                 = $facts['fqdn'], # storage here is not params::storage
   $password                = 'secret',
@@ -38,14 +38,14 @@ class bacula::storage (
   $homedir                 = $bacula::homedir,
   $rundir                  = $bacula::rundir,
   $conf_dir                = $bacula::conf_dir,
-  $director                = $bacula::params::director,
+  $director_name           = $bacula::director,
   $user                    = $bacula::bacula_user,
   $group                   = $bacula::bacula_group,
-) inherits bacula {
+) inherits ::bacula {
 
-  include ::bacula
+  # Packages are virtual due to some platforms shipping the
+  # SD and Dir as part of the same package.
   include bacula::virtual
-
   realize(Package[$packages])
 
   service { $services:
@@ -54,7 +54,7 @@ class bacula::storage (
     require   => Package[$packages],
   }
 
-  if $::bacula::ssl {
+  if $::bacula::use_ssl {
     include ::bacula::ssl
     Service[$services] {
       subscribe => File[$::bacula::ssl::ssl_files],
@@ -74,14 +74,14 @@ class bacula::storage (
 
   bacula::messages { 'Standard-sd':
     daemon   => 'sd',
-    director => "${director}-dir = all",
+    director => "${director_name}-dir = all",
     syslog   => 'all, !skipped',
     append   => '"/var/log/bacula/bacula-sd.log" = all, !skipped',
   }
 
   # Realize the clause the director is exporting here so we can allow access to
   # the storage daemon Adds an entry to ${conf_dir}/bacula-sd.conf
-  Concat::Fragment <<| tag == "bacula-storage-dir-${director}" |>>
+  Concat::Fragment <<| tag == "bacula-storage-dir-${director_name}" |>>
 
   concat { "${conf_dir}/bacula-sd.conf":
     owner     => 'root',
@@ -108,6 +108,6 @@ class bacula::storage (
     device_name   => $device_name,
     media_type    => $media_type,
     maxconcurjobs => $maxconcurjobs,
-    tag           => "bacula-${::bacula::params::storage}",
+    tag           => "bacula-${storage}",
   }
 }
