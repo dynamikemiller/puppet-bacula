@@ -46,7 +46,7 @@ class bacula::director (
 
   # Packages are virtual due to some platforms shipping the SD and Dir as
   # part of the same package.
-  include bacula::virtual
+  include ::bacula::virtual
 
   # Allow for package names to include EPP syntax for db_type
   $packages.each |$p| {

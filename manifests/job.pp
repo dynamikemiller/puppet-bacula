@@ -72,7 +72,7 @@ define bacula::job (
   validate_re($jobtype, ['^Backup', '^Restore', '^Admin', '^Verify', '^Copy', '^Migrate'])
   validate_re($accurate, ['^yes', '^no'])
 
-  include bacula::common
+  include ::bacula
   $conf_dir = $bacula::conf_dir
 
   # if the fileset is not defined, we fall back to one called "Common"
@@ -84,7 +84,7 @@ define bacula::job (
 
     @@bacula::director::fileset { $name:
       files    => $files,
-      excludes => $excludes
+      excludes => $excludes,
     }
 
   } else {

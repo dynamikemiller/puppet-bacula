@@ -45,7 +45,7 @@ class bacula::storage (
 
   # Packages are virtual due to some platforms shipping the
   # SD and Dir as part of the same package.
-  include bacula::virtual
+  include ::bacula::virtual
 
   # Allow for package names to include EPP syntax for db_type
   $db_type = lookup('bacula::director::db_type')
@@ -58,9 +58,9 @@ class bacula::storage (
   }
 
   service { $services:
-    ensure    => running,
-    enable    => true,
-    require   => Package[$packages],
+    ensure  => running,
+    enable  => true,
+    require => Package[$packages],
   }
 
   if $::bacula::use_ssl {
@@ -71,7 +71,7 @@ class bacula::storage (
   }
 
   concat::fragment { 'bacula-storage-header':
-    order   => 00,
+    order   => '00',
     target  => "${conf_dir}/bacula-sd.conf",
     content => template('bacula/bacula-sd-header.erb'),
   }

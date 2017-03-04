@@ -18,7 +18,7 @@ class bacula::virtual {
     })
 
     @package { $package_name:
-      ensure => present
+      ensure => present,
     }
   }
 

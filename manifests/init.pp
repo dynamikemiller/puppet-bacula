@@ -35,6 +35,6 @@ class bacula (
 ){
 
   if $use_ssl {
-    include bacula::ssl
+    include ::bacula::ssl
   }
 }
