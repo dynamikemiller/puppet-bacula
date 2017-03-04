@@ -23,7 +23,7 @@
 #
 class bacula::storage (
   String $services,
-  String $packages,
+  Array $packages,
   String $port = '9103',
   $listen_address          = $facts['ipaddress'],
   $storage                 = $facts['fqdn'], # storage here is not params::storage
@@ -46,7 +46,16 @@ class bacula::storage (
   # Packages are virtual due to some platforms shipping the
   # SD and Dir as part of the same package.
   include bacula::virtual
-  realize(Package[$packages])
+
+  # Allow for package names to include EPP syntax for db_type
+  $db_type = lookup('bacula::director::db_type')
+  $packages.each |$p| {
+    $package_name = inline_epp($p, {
+      'db_type' => $db_type
+    })
+
+    realize(Package[$package_name])
+  }
 
   service { $services:
     ensure    => running,

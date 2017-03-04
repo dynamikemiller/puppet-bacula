@@ -1,15 +1,14 @@
 ---
 bacula::director::postgresql::make_bacula_tables: '/usr/local/share/bacula/make_postgresql_tables'
 
-bacula_director_packages: [ 'bacula-server' ]
+bacula::director::packages: [ 'bacula-server' ]
 bacula::director::services: 'bacula-dir'
-bacula_storage_packages: [ 'bacula-server' ]
-bacula_storage_services: [ 'bacula-sd' ]
+bacula::storage::packages: [ 'bacula-server' ]
+bacula::storage::services: 'bacula-sd'
 bacula::client::packages: 'sysutils/bacula-client'
 bacula::client::services: 'bacula-fd'
-conf_dir: '/usr/local/etc/bacula'
-bacula_dir: '/usr/local/etc/bacula/ssl'
-rundir: '/var/run'
-homedir: '/var/db/bacula'
-bacula_user: 'bacula'
-bacula_group: 'bacula'
+bacula::conf_dir: '/usr/local/etc/bacula'
+bacula::rundir: '/var/run'
+bacula::homedir: '/var/db/bacula'
+bacula::bacula_user: 'bacula'
+bacula::bacula_group: 'bacula'

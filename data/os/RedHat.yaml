@@ -2,7 +2,7 @@
 bacula::director::postgresql::make_bacula_tables: '/usr/libexec/bacula/make_bacula_tables.postgresql'
 bacula::director::db_type: 'postgresql'
 
-bacula::storage::packages: 'bacula-storage'
+bacula::storage::packages: [ 'bacula-storage' ]
 bacula::director::packages:
   - 'bacula-director'
   - 'bacula-console'

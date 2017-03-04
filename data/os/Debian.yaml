@@ -13,7 +13,6 @@ bacula::storage::packages:
 bacula::storage::services: 'bacula-sd'
 
 bacula::conf_dir: '/etc/bacula'
-bacula::bacula_dir: '/etc/bacula/ssl'
 bacula::homedir: '/var/lib/bacula'
 bacula::rundir: '/var/run/bacula'
 bacula::bacula_user: 'bacula'

@@ -1,14 +1,13 @@
 ---
 bacula_director_packages: [ 'bacula-director-common', "bacula-director-${db_type}", 'bacula-console' ]
 bacula::director::services: 'bacula-dir'
-bacula_storage_packages: [ 'bacula-sd', "bacula-sd-${db_type}" ]
-bacula_storage_services: [ 'bacula-sd' ]
+bacula::storage::packages: [ 'bacula-sd', "bacula-sd-${db_type}" ]
+bacula::storage::services: [ 'bacula-sd' ]
 bacula::client::packages: 'bacula-client'
-bacula_client_services: 'bacula-fd'
-conf_dir: '/etc/bacula'
-bacula_dir: '/etc/bacula/ssl'
-homedir: '/var/lib/bacula'
-rundir: '/var/run'
-bacula_user: 'bacula'
-bacula_group: 'bacula'
+bacula::client::services: 'bacula-fd'
+bacula::conf_dir: '/etc/bacula'
+bacula::homedir: '/var/lib/bacula'
+bacula::rundir: '/var/run'
+bacula::bacula_user: 'bacula'
+bacula::bacula_group: 'bacula'
 
