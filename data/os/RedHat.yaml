@@ -2,14 +2,6 @@
 bacula::director::postgresql::make_bacula_tables: '/usr/libexec/bacula/make_bacula_tables.postgresql'
 bacula::director::db_type: 'postgresql'
 
-  #if 0 + $facts['operatingsystemmajrelease'] < 7 or ($facts['operatingsystem'] == 'Fedora' and 0 + $facts['operatingsystemmajrelease'] < 17) {
-  #  $bacula_director_packages = [ 'bacula-director-common', "bacula-director-${db_type}", 'bacula-console' ]
-  #  $bacula_storage_packages  = [ 'bacula-storage-common', "bacula-storage-${db_type}" ]
-  #} else {
-  #  $bacula_director_packages = [ 'bacula-director', 'bacula-console' ]
-  #  $bacula_storage_packages  = [ 'bacula-storage' ]
-  #}
-
 bacula::storage::packages: 'bacula-storage'
 bacula::director::packages:
   - 'bacula-director'
