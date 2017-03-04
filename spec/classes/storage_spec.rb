@@ -5,28 +5,27 @@ describe 'bacula::storage' do
     context "on #{os}" do
       let(:facts) { facts }
 
-      it { should contain_class('bacula::storage') }
+      it { is_expected.to contain_class('bacula::storage') }
 
       case facts[:osfamily]
-      when 'Debian'
       when 'RedHat'
         case facts[:operatingsystemmajrelease]
         when '6'
-          it { should contain_package('bacula-storage-common').with(
-              'ensure' => 'present',
+          it do
+            is_expected.to contain_package('bacula-storage-common').with(
+              'ensure' => 'present'
             )
-          }
-          it { should_not contain_package('bacula-storage') }
+          end
+          it { is_expected.not_to contain_package('bacula-storage') }
         else
-          it { should contain_package('bacula-storage').with(
-              'ensure' => 'present',
+          it do
+            is_expected.to contain_package('bacula-storage').with(
+              'ensure' => 'present'
             )
-          }
-          it { should_not contain_package('bacula-storage-common') }
+          end
+          it { is_expected.not_to contain_package('bacula-storage-common') }
         end
       end
-
     end
   end
 end
-
