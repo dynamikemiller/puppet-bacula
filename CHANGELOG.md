@@ -5,9 +5,15 @@ refactor ssl data
 rename bacula::params::ssl_dir to bacula::ssl::ssl_dir
 move bacula::params::file_retention to bacula class
 move bacula::params::job_retention to bacula class
-move bacula::params::autoprune to bacula class
+move bacula::params::autoprune to bacula::client class
 move bacula::params::monitor to bacula class
 move bacula::params::defive_seltype to bacula class
+
+move bacula::params::ssl to bacula::use_ssl
+
+
+
+
 
 ## 2017-01-18 4.1.0
 ### Summary

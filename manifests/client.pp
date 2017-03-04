@@ -1,27 +1,23 @@
-# Class: bacula::client
-#
 # This class installs and configures the File Daemon to backup a client system.
 #
 # @example
 #   class { 'bacula::client': director_name => 'mydirector.example.com' }
 #
 # @param port The listening port for the File Daemon
-# @param listen_address
-# @param password
-# @param max_concurrent_jobs
-# @param packages
-# @param services
-# @param director_name
-# @param storage
-# @param config_file
-# @param autoprune
-# @param file_retention
-# @param job_retention
-# @param client
-# @param default_pool
-# @param default_pool_full
-# @param default_pool_inc
-# @param default_pool_diff
+# @param listen_address The listening INET or INET6 address for File Daemon
+# @param password A password to use for communication with this File Daemon
+# @param max_concurrent_jobs Bacula FD option for 'Maximum Concurrent Jobs'
+# @param packages A list of packages to install; loaded from hiera
+# @param services A list of services to operate; loaded from hiera
+# @param director_name The hostname of the director for this FD
+# @param autoprune Bacula FD option for 'AutoPrune'
+# @param file_retention Bacula FD option for 'File Retention'
+# @param job_retention Bacula FD option for 'Job Retention'
+# @param client The name or address by which to contact this FD
+# @param default_pool The name of the Pool for this FD to use by default
+# @param default_pool_full The name of the Pool to use for Full jobs
+# @param default_pool_inc The name of the Pool to use for Incremental jobs
+# @param default_pool_diff The name of the Pool to use for Differential jobs
 #
 class bacula::client (
   String $packages,
@@ -31,7 +27,6 @@ class bacula::client (
   $password            = 'secret',
   $max_concurrent_jobs = '2',
   $director_name       = $bacula::director,
-  $storage             = $bacula::storage,
   $autoprune           = 'yes',
   $file_retention      = '45 days',
   $job_retention       = '6 months',

@@ -19,7 +19,6 @@ describe 'bacula::director' do
               'ensure' => 'present'
             )
           end
-          #it { is_expected.to contain_package('bacula-director-pgsql') }
           it { is_expected.to contain_package('bacula-console') }
           it { is_expected.not_to contain_package('bacula-director') }
         else
