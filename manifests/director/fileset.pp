@@ -20,7 +20,7 @@ define bacula::director::fileset (
   Array $excludes               = [],
   Hash[String, String] $options = {
     'signature'   => 'SHA1',
-    'compression' => 'GZIP9'
+    'compression' => 'GZIP9',
   },
 ) {
 
