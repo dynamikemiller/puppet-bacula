@@ -1,12 +1,14 @@
 define bacula::director::client (
-  $port           = '9102',
-  $client         = $::fqdn,
-  $password       = 'secret',
-  $conf_dir       = $bacula::params::conf_dir, # Overridden at realize
-  $file_retention = $bacula::params::file_retention,
-  $job_retention  = $bacula::params::job_retention,
-  $autoprune      = $bacula::params::autoprune,
+  $port,
+  $client,
+  $password,
+  $file_retention,
+  $job_retention,
+  String $autoprune,
 ) {
+
+  include ::bacula
+  $conf_dir = $::bacula::conf_dir
 
   concat::fragment { "bacula-director-client-${client}":
     target  => "${conf_dir}/conf.d/client.conf",

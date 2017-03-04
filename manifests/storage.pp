@@ -10,19 +10,19 @@ class bacula::storage (
   $device_name             = "${::fqdn}-device",
   $device                  = '/bacula',
   $device_mode             = '0770',
-  $device_owner            = $bacula::params::bacula_user,
-  $device_seltype          = $bacula::params::device_seltype,
+  $device_owner            = $bacula::bacula_user,
+  $device_seltype          = $bacula::device_seltype,
   $media_type              = 'File',
   $maxconcurjobs           = '5',
   $packages                = $bacula::params::bacula_storage_packages,
   $services                = $bacula::params::bacula_storage_services,
   $homedir                 = $bacula::params::homedir,
-  $rundir                  = $bacula::params::rundir,
-  $conf_dir                = $bacula::params::conf_dir,
+  $rundir                  = $bacula::rundir,
+  $conf_dir                = $bacula::conf_dir,
   $director                = $bacula::params::director,
   $user                    = $bacula::params::bacula_user,
   $group                   = $bacula::params::bacula_group,
-) inherits bacula::params {
+) inherits bacula {
 
   include bacula::common
   include bacula::ssl

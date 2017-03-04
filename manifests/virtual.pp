@@ -3,13 +3,14 @@
 # This class contains virtual resources shared between the bacula::director
 # and bacula::storage classes.
 #
-class bacula::virtual(
-  $director_packages = $bacula::params::bacula_director_packages,
-  $storage_packages  = $bacula::params::bacula_storage_packages,
-) inherits bacula::params {
+class bacula::virtual {
   # Get the union of all the packages so we prevent having duplicate packages,
   # which is exactly the reason for having a virtual package resource.
-  $packages = union($director_packages, $storage_packages)
+
+  $director_packages = hiera('bacula::director::packages')
+  $storage_packages  = hiera('bacula::storage::packages', [])
+  $packages          = ($director_packages + $storage_packages).unique
+
   @package { $packages:
     ensure => present
   }

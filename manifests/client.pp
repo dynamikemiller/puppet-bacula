@@ -11,16 +11,14 @@ class bacula::client (
   $listen_address      = $::ipaddress,
   $password            = 'secret',
   $max_concurrent_jobs = '2',
-  $packages            = $bacula::params::bacula_client_packages,
-  $services            = $bacula::params::bacula_client_services,
-  $conf_dir            = $bacula::params::conf_dir,
+  String $packages,
+  String $services,
   $director            = $bacula::params::director,
   $storage             = $bacula::params::storage,
-  $group               = $bacula::params::bacula_group,
-  $client_config       = $bacula::params::client_config,
-  $autoprune           = $bacula::params::autoprune,
-  $file_retention      = $bacula::params::file_retention,
-  $job_retention       = $bacula::params::job_retention,
+  $config_file,
+  $autoprune           = 'yes',
+  $file_retention = '45 days',
+  $job_retention  = '6 months',
   $client              = $::fqdn,
   $default_pool        = 'Default',
   $default_pool_full   = undef,
@@ -28,8 +26,12 @@ class bacula::client (
   $default_pool_diff   = undef,
 ) inherits bacula::params {
 
-  include bacula::common
-  include bacula::ssl
+  include ::bacula
+  include ::bacula::common
+  include ::bacula::ssl
+
+  $group    = $::bacula::bacula_group
+  $conf_dir = $::bacula::conf_dir
 
   package { $packages:
     ensure => present,
@@ -42,17 +44,17 @@ class bacula::client (
     require   => Package[$packages],
   }
 
-  concat { $client_config:
+  concat { $config_file:
     owner     => 'root',
     group     => $group,
     mode      => '0640',
     show_diff => false,
-    require   => Package[$bacula::params::bacula_client_packages],
-    notify    => Service[$bacula::params::bacula_client_services],
+    require   => Package[$packages],
+    notify    => Service[$services],
   }
 
   concat::fragment { 'bacula-client-header':
-    target  => $client_config,
+    target  => $config_file,
     content => template('bacula/bacula-fd-header.erb'),
   }
 

@@ -15,32 +15,30 @@
 #   }
 #
 class bacula::director (
-  $port                = '9101',
-  $listen_address      = $::ipaddress,
-  $db_user             = $bacula::params::bacula_user,
-  $db_pw               = 'notverysecret',
-  $db_name             = $bacula::params::bacula_user,
-  $db_type             = $bacula::params::db_type,
-  $password            = 'secret',
-  $max_concurrent_jobs = '20',
-  $packages            = $bacula::params::bacula_director_packages,
-  $services            = $bacula::params::bacula_director_services,
-  $homedir             = $bacula::params::homedir,
-  $rundir              = $bacula::params::rundir,
   $conf_dir            = $bacula::params::conf_dir,
-  $director            = $::fqdn, # director here is not params::director
+  $db_name             = $bacula::params::bacula_user,
+  $db_pw               = 'notverysecret',
+  $db_type,
+  $db_user             = $bacula::params::bacula_user,
   $director_address    = $bacula::params::director_address,
-  $storage             = $bacula::params::storage,
+  $director            = $::fqdn, # director here is not params::director
   $group               = $bacula::params::bacula_group,
+  $homedir             = $bacula::params::homedir,
   $job_tag             = $bacula::params::job_tag,
+  $listen_address      = $::ipaddress,
+  $max_concurrent_jobs = '20',
   $messages,
+  $password            = 'secret',
+  $port                = '9101',
+  $rundir              = $bacula::params::rundir,
+  $services            = $bacula::params::bacula_director_services,
+  $storage             = $bacula::params::storage,
 ) inherits bacula::params {
 
-  include bacula::common
-  include bacula::client
-  include bacula::ssl
-  include bacula::director::defaults
-  include bacula::virtual
+  include ::bacula::common
+  include ::bacula::client
+  include ::bacula::ssl
+  include ::bacula::director::defaults
 
   case $db_type {
     /^(pgsql|postgresql)$/: { include bacula::director::postgresql }
@@ -48,7 +46,7 @@ class bacula::director (
     default:                { fail('No db_type set') }
   }
 
-  realize(Package[$packages])
+  package { $packages: }
 
   service { $services:
     ensure    => running,
@@ -101,7 +99,6 @@ class bacula::director (
     Bacula::Fileset <<||>> { conf_dir => $conf_dir }
     Bacula::Director::Job <<||>> { conf_dir => $conf_dir }
   }
-
 
   Concat::Fragment <<| tag == "bacula-${director}" |>>
 

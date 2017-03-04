@@ -17,11 +17,11 @@ define bacula::messages (
 ) {
   validate_re($daemon, ['^dir', '^sd', '^fd'])
 
-  include bacula::common
-  include bacula::params
+  include ::bacula
+  include ::bacula::common
 
   concat::fragment { "bacula-messages-${daemon}-${name}":
-    target  => "${bacula::params::conf_dir}/bacula-${daemon}.conf",
+    target  => "${bacula::conf_dir}/bacula-${daemon}.conf",
     content => template('bacula/messages.erb'),
   }
 }

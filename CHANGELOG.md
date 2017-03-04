@@ -1,6 +1,14 @@
 ## Unreleased
 - Add support for multiple directors
 
+refactor ssl data
+rename bacula::params::ssl_dir to bacula::ssl::ssl_dir
+move bacula::params::file_retention to bacula class
+move bacula::params::job_retention to bacula class
+move bacula::params::autoprune to bacula class
+move bacula::params::monitor to bacula class
+move bacula::params::defive_seltype to bacula class
+
 ## 2017-01-18 4.1.0
 ### Summary
 Testing updates, bug fix, and more usage of hiera.
