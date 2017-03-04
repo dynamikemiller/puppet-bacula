@@ -1,16 +1,9 @@
-# Class: bacula::director::postgresql
-#
-# Deploys a postgres database server for hosting the Bacula director
-# database.
+# Deploys a postgres database server for hosting the Bacula director database.
 #
 # @param make_bacula_tables
 # @param db_name
 # @param db_pw
 # @param db_user
-#
-# Sample Usage:
-#
-#   none
 #
 class bacula::director::postgresql (
   String $make_bacula_tables = '',

@@ -4,7 +4,7 @@
 # method.  This resources is intended to be used from bacula::storage as a way
 # to export the pool resources to the director.
 #
-# @param pooltype   - Bacula pool configuration option "Pool Type"
+# @param pooltype    - Bacula pool configuration option "Pool Type"
 # @param recycle     - Bacula pool configuration option "Recycle"
 # @param autoprune   - Bacula pool configuration option "AutoPrune"
 # @param volret      - Bacula pool configuration option "Volume Retention"

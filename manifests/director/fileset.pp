@@ -1,23 +1,27 @@
-# This class handles a Director's fileset.conf entry
+# This class handles a Director's fileset.conf entry.  Filesets are intended to
+# be included on the Director catalog.  Resources of this type may also be
+# exported to be realized by the director.
+#
+# @param files
+# @param conf_dir The bacula configuration director.  Should not need adjusting.
+# @param excludes A list of paths to exclude from the filest
+# @param options A hash of options to include in the fileset
+# @param director The name of the director intended to receive this fileset.
 #
 # @example
-#   @@bacula::director::fileset { 'Home':
+#   bacula::director::fileset { 'Home':
 #     files => ['/home'],
 #   }
 #
-# @param files
-# @param excludes
-# @param options
-# @param director
-
-
-
 define bacula::director::fileset (
   Array $files,
-  String $director = $::bacula::client::director,
+  String $conf_dir              = $::bacula::conf_dir,
+  String $director              = $::bacula::client::director,
   Array $excludes               = [],
-  Hash[String, String] $options = {'signature' => 'SHA1', 'compression' => 'GZIP9'},
-  $conf_dir                     = $::bacula::conf_dir,
+  Hash[String, String] $options = {
+    'signature'   => 'SHA1',
+    'compression' => 'GZIP9'
+  },
 ) {
 
   concat::fragment { "bacula-fileset-${name}":

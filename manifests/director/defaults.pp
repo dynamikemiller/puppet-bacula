@@ -1,6 +1,7 @@
-#: Class bacul::director::defaults
-#
-# Some default valuse for the bacula director
+# Some default resources for the bacula director.  These are referenced by
+# defaults in other parts of this module, but need not be used.  They are here
+# to ensure that the simple case of deploying a director and storage on the
+# same machine, allows clients to receive the correct configuration.
 #
 class bacula::director::defaults {
 
