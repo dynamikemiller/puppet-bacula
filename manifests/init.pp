@@ -8,7 +8,9 @@ class bacula (
   Boolean $monitor       = true,
   String $device_seltype = 'bacula_store_t',
   Boolean $ssl = false,
+  String $rundir,
 ){
+  include bacula::common
 
   if $ssl {
     include bacula::ssl

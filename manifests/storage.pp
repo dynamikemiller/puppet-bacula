@@ -2,30 +2,48 @@
 #
 # Configures bacula storage daemon
 #
+# @param port String port to bind
+# @param listen_address INET or INET6 address to listen on
+# @param storage
+# @param device_password
+# @param device
+# @param device_mode
+# @param device_seltype
+# @param media_type
+# @param maxconcurjobs
+# @param packages
+# @param services
+# @param homedir
+# @param rundir
+# @param conf_dir
+# @param rundir
+# @param director
+# @param user
+# @param group
+#
 class bacula::storage (
-  $port                    = '9103',
-  $listen_address          = $::ipaddress,
-  $storage                 = $::fqdn, # storage here is not params::storage
+  String $port,
+  String $services,
+  String $packages,
+  $listen_address          = $facts['ipaddress'],
+  $storage                 = $facts['fqdn'], # storage here is not params::storage
   $password                = 'secret',
-  $device_name             = "${::fqdn}-device",
+  $device_name             = "${trusted['fqdn']}-device",
   $device                  = '/bacula',
   $device_mode             = '0770',
   $device_owner            = $bacula::bacula_user,
   $device_seltype          = $bacula::device_seltype,
   $media_type              = 'File',
   $maxconcurjobs           = '5',
-  $packages                = $bacula::params::bacula_storage_packages,
-  $services                = $bacula::params::bacula_storage_services,
-  $homedir                 = $bacula::params::homedir,
+  $homedir                 = $bacula::homedir,
   $rundir                  = $bacula::rundir,
   $conf_dir                = $bacula::conf_dir,
   $director                = $bacula::params::director,
-  $user                    = $bacula::params::bacula_user,
-  $group                   = $bacula::params::bacula_group,
+  $user                    = $bacula::bacula_user,
+  $group                   = $bacula::bacula_group,
 ) inherits bacula {
 
-  include bacula::common
-  include bacula::ssl
+  include ::bacula
   include bacula::virtual
 
   realize(Package[$packages])
@@ -33,8 +51,14 @@ class bacula::storage (
   service { $services:
     ensure    => running,
     enable    => true,
-    subscribe => File[$bacula::ssl::ssl_files],
     require   => Package[$packages],
+  }
+
+  if $::bacula::ssl {
+    include ::bacula::ssl
+    Service[$services] {
+      subscribe => File[$::bacula::ssl::ssl_files],
+    }
   }
 
   concat::fragment { 'bacula-storage-header':

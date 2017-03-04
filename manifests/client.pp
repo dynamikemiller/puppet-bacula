@@ -27,8 +27,6 @@ class bacula::client (
 ) inherits bacula::params {
 
   include ::bacula
-  include ::bacula::common
-  include ::bacula::ssl
 
   $group    = $::bacula::bacula_group
   $conf_dir = $::bacula::conf_dir
@@ -40,8 +38,14 @@ class bacula::client (
   service { $services:
     ensure    => running,
     enable    => true,
-    subscribe => File[$bacula::ssl::ssl_files],
     require   => Package[$packages],
+  }
+
+  if $::bacula::ssl {
+    include ::bacula::ssl
+    Service[$services] {
+      subscribe => File[$::bacula::ssl::ssl_files],
+    }
   }
 
   concat { $config_file:

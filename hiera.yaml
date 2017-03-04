@@ -2,6 +2,9 @@
 version: 4
 datadir: data
 hierarchy:
+  - name: "os/family/name/major"
+    path: "os/%{facts.os.family}/%{facts.os.name}/%{facts.os.release.major}"
+    backend: yaml
   - name: 'os/family'
     path: 'os/%{facts.osfamily}'
     backend: yaml

@@ -9,9 +9,15 @@ bacula::director::db_type: 'postgresql'
   #  $bacula_director_packages = [ 'bacula-director', 'bacula-console' ]
   #  $bacula_storage_packages  = [ 'bacula-storage' ]
   #}
+
+bacula::storage::packages: 'bacula-storage'
+bacula::director::packages:
+  - 'bacula-director'
+  - 'bacula-console'
+bacula::client::packages: 'bacula-client'
+
 bacula_director_services: [ 'bacula-dir' ]
 bacula_storage_services: [ 'bacula-sd' ]
-bacula::client::packages: 'bacula-client'
 bacula::client::services: 'bacula-fd'
 bacula::conf_dir: '/etc/bacula'
 bacula_dir: '/etc/bacula/ssl'

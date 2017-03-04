@@ -10,20 +10,20 @@ describe 'bacula::storage' do
       case facts[:osfamily]
       when 'Debian'
       when 'RedHat'
-        case facts[:operatingsystemmajrelease]
-        when '6'
-          it { should contain_package('bacula-storage-common').with(
-              'ensure' => 'present',
-            )
-          }
-          it { should_not contain_package('bacula-storage') }
-        else
-          it { should contain_package('bacula-storage').with(
-              'ensure' => 'present',
-            )
-          }
-          it { should_not contain_package('bacula-storage-common') }
-        end
+        #case facts[:operatingsystemmajrelease]
+        #when '6'
+        #  it { should contain_package('bacula-storage-common').with(
+        #      'ensure' => 'present',
+        #    )
+        #  }
+        #  it { should_not contain_package('bacula-storage') }
+        #else
+        #  it { should contain_package('bacula-storage').with(
+        #      'ensure' => 'present',
+        #    )
+        #  }
+        #  it { should_not contain_package('bacula-storage-common') }
+        #end
       end
 
     end

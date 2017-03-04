@@ -7,8 +7,8 @@ class bacula::virtual {
   # Get the union of all the packages so we prevent having duplicate packages,
   # which is exactly the reason for having a virtual package resource.
 
-  $director_packages = hiera('bacula::director::packages')
-  $storage_packages  = hiera('bacula::storage::packages', [])
+  $director_packages = lookup('bacula::director::packages')
+  $storage_packages  = lookup('bacula::storage::packages')
   $packages          = ($director_packages + $storage_packages).unique
 
   @package { $packages:
