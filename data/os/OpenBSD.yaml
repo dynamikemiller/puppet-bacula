@@ -1,6 +1,6 @@
 ---
 bacula::director::postgresql::make_bacula_tables: '/usr/local/libexec/bacula/make_postgresql_tables'
-bacula::director::packages: [ 'bacula-server', "bacula-${db_type}" ]
+bacula::director::packages: [ 'bacula-server', "bacula-<%= $db_type %>" ]
 bacula::director::services: 'bacula_dir'
 bacula::storage::packages: [ 'bacula-server' ]
 bacula::storage::services: 'bacula_sd'
