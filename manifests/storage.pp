@@ -2,45 +2,45 @@
 #
 # Configures bacula storage daemon
 #
-# @param port The listening port for the Storage Daemon
-# @param listen_address INET or INET6 address to listen on
-# @param storage
-# @param device_password
+# @param conf_dir
 # @param device
 # @param device_mode
+# @param device_password
 # @param device_seltype
-# @param media_type
-# @param maxconcurjobs
-# @param packages
-# @param services
-# @param homedir
-# @param rundir
-# @param conf_dir
-# @param rundir
 # @param director_name
-# @param user
 # @param group
+# @param homedir
+# @param listen_address INET or INET6 address to listen on
+# @param maxconcurjobs
+# @param media_type
+# @param packages
+# @param port The listening port for the Storage Daemon
+# @param rundir
+# @param rundir
+# @param services
+# @param storage
+# @param user
 #
 class bacula::storage (
   String $services,
   Array $packages,
-  String $port = '9103',
-  $listen_address          = $facts['ipaddress'],
-  $storage                 = $facts['fqdn'], # storage here is not params::storage
-  $password                = 'secret',
-  $device_name             = "${trusted['fqdn']}-device",
-  $device                  = '/bacula',
-  $device_mode             = '0770',
-  $device_owner            = $bacula::bacula_user,
-  $device_seltype          = $bacula::device_seltype,
-  $media_type              = 'File',
-  $maxconcurjobs           = '5',
-  $homedir                 = $bacula::homedir,
-  $rundir                  = $bacula::rundir,
-  $conf_dir                = $bacula::conf_dir,
-  $director_name           = $bacula::director,
-  $user                    = $bacula::bacula_user,
-  $group                   = $bacula::bacula_group,
+  $conf_dir       = $bacula::conf_dir,
+  $device         = '/bacula',
+  $device_mode    = '0770',
+  $device_name    = "${trusted['fqdn']}-device",
+  $device_owner   = $bacula::bacula_user,
+  $device_seltype = $bacula::device_seltype,
+  $director_name  = $bacula::director,
+  $group          = $bacula::bacula_group,
+  $homedir        = $bacula::homedir,
+  $listen_address = $facts['ipaddress'],
+  $maxconcurjobs  = '5',
+  $media_type     = 'File',
+  $password       = 'secret',
+  String $port    = '9103',
+  $rundir         = $bacula::rundir,
+  $storage        = $facts['fqdn'], # storage here is not params::storage
+  $user           = $bacula::bacula_user,
 ) inherits ::bacula {
 
   # Packages are virtual due to some platforms shipping the

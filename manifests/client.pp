@@ -1,8 +1,5 @@
 # This class installs and configures the File Daemon to backup a client system.
 #
-# @example
-#   class { 'bacula::client': director_name => 'mydirector.example.com' }
-#
 # @param port The listening port for the File Daemon
 # @param listen_address The listening INET or INET6 address for File Daemon
 # @param password A password to use for communication with this File Daemon
@@ -18,6 +15,9 @@
 # @param default_pool_full The name of the Pool to use for Full jobs
 # @param default_pool_inc The name of the Pool to use for Incremental jobs
 # @param default_pool_diff The name of the Pool to use for Differential jobs
+#
+# @example
+#   class { 'bacula::client': director_name => 'mydirector.example.com' }
 #
 class bacula::client (
   String $packages,

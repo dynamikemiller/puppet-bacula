@@ -2,16 +2,34 @@
 #
 # This class installs and configures the Bacula Backup Director
 #
-# @param port The listening port for the Director
-# @param db_user: the database user
-# @param db_pw: the database user's password
+# @param conf_dir
 # @param db_name: the database name
+# @param db_pw: the database user's password
+# @param db_type
+# @param db_user: the database user
+# @param director
+# @param director_address
+# @param group
+# @param homedir
+# @param job_tag
+# @param listen_address
+# @param max_concurrent_jobs
+# @param messages
+# @param packages
+# @param password
 # @param password: password to connect to the director
+# @param port
+# @param port The listening port for the Director
+# @param rundir
+# @param services
+# @param storage
 #
 # @example
 #   class { 'bacula::director':
 #     storage => 'mystorage.example.com'
 #   }
+#
+# TODO director_address is only used by bconsole, and is confusing as director is likely the same 
 #
 class bacula::director (
   $db_type,
@@ -69,7 +87,6 @@ class bacula::director (
       subscribe => File[$::bacula::ssl::ssl_files],
     }
   }
-
 
   file { "${conf_dir}/conf.d":
     ensure => directory,
