@@ -1,7 +1,10 @@
 # Class: bacula::virtual
 #
-# This class contains virtual resources shared between the bacula::director
-# and bacula::storage classes.
+# This class contains virtual resources shared between the bacula::director and
+# bacula::storage classes.  This allows the director and storate roles to be
+# installed on either seperate machines, or the same machine.  On some
+# platforms, the director package and storate package are the same, while on
+# other platforms there are seperate packages for each.
 #
 class bacula::virtual {
   # Get the union of all the packages so we prevent having duplicate packages,

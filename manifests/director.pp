@@ -1,6 +1,4 @@
-# Class: bacula::director
-#
-# This class installs and configures the Bacula Backup Director
+# This class installs and configures the Bacula Director
 #
 # @param conf_dir
 # @param db_name: the database name
