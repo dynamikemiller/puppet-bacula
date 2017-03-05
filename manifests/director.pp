@@ -21,6 +21,8 @@
 # @param services
 # @param storage
 # @param manage_db
+# @param db_address
+# @param db_port
 #
 # @example
 #   class { 'bacula::director':
