@@ -41,11 +41,11 @@ class bacula::director (
   String $db_pw        = 'notverysecret',
   String $db_user      = 'bacula',
   $director_address    = $bacula::director_address,
-  $director            = $::fqdn, # director here is not bacula::director
+  $director            = $trusted['certname'], # director here is not bacula::director
   $group               = $bacula::bacula_group,
   $homedir             = $bacula::homedir,
   $job_tag             = $bacula::job_tag,
-  $listen_address      = $::ipaddress,
+  $listen_address      = $facts['ipaddress'],
   $max_concurrent_jobs = '20',
   $password            = 'secret',
   $port                = '9101',
