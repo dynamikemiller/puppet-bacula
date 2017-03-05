@@ -49,18 +49,17 @@ class bacula::storage (
 
   # Allow for package names to include EPP syntax for db_type
   $db_type = lookup('bacula::director::db_type')
-  $packages.each |$p| {
+  $package_names = $packages.map |$p| {
     $package_name = inline_epp($p, {
       'db_type' => $db_type
     })
-
-    realize(Package[$package_name])
   }
+  realize(Package[$package_names])
 
   service { $services:
     ensure  => running,
     enable  => true,
-    require => Package[$packages],
+    require => Package[$package_names],
   }
 
   if $::bacula::use_ssl {
