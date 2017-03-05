@@ -16,7 +16,6 @@
 # @param packages
 # @param password
 # @param password: password to connect to the director
-# @param port
 # @param port The listening port for the Director
 # @param rundir
 # @param services
@@ -41,7 +40,7 @@ class bacula::director (
   String $db_pw               = 'notverysecret',
   String $db_user             = 'bacula',
   Optiona[String] $db_address = undef,
-  Optiona[String] $port       = undef,
+  Optiona[String] $db_port    = undef,
   $director_address           = $bacula::director_address,
   $director                   = $trusted['certname'], # director here is not bacula::director
   $group                      = $bacula::bacula_group,
