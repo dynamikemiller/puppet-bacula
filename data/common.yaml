@@ -12,7 +12,7 @@ bacula::director::messages:
 bacula::director::postgresql::make_bacula_tables: ''
 bacula::director::db_type: 'pgsql'
 bacula::director::packages: []
-bacula::ssl::ssl_dir: '/etc/puppetlabs/puppet/ssl'
+#bacula::ssl::ssl_dir: '/etc/puppetlabs/puppet/ssl'
 certfile: "%{hiera('bacula::conf_dir')}/ssl/${::clientcert}_cert.pem"
 keyfile: "%{conf_dir}/ssl/${::clientcert}_key.pem"
 cafile: "%{conf_dir}/ssl/ca.pem"
