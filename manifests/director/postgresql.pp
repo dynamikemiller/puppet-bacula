@@ -13,17 +13,18 @@ class bacula::director::postgresql (
 ) inherits ::bacula::director {
 
   include ::bacula
-  #include ::bacula::director
-  require ::postgresql::server
 
   $services = $::bacula::director::services
   $user     = $::bacula::bacula_user
 
-  postgresql::server::db { $db_name:
-    user     => $db_user,
-    password => postgresql_password($db_user, $db_pw),
-    encoding => 'SQL_ASCII',
-    locale   => 'C',
+  if $bacula::director::manage_db {
+    require ::postgresql::server
+    postgresql::server::db { $db_name:
+      user     => $db_user,
+      password => postgresql_password($db_user, $db_pw),
+      encoding => 'SQL_ASCII',
+      locale   => 'C',
+    }
   }
 
   exec { "/bin/sh ${make_bacula_tables}":

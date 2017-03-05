@@ -21,6 +21,7 @@
 # @param rundir
 # @param services
 # @param storage
+# @param manage_db
 #
 # @example
 #   class { 'bacula::director':
@@ -34,6 +35,7 @@ class bacula::director (
   $messages,
   Array $packages,
   String $services,
+  Boolean $manage_db   = true,
   $conf_dir            = $bacula::conf_dir,
   $db_name             = $bacula::bacula_user,
   $db_pw               = 'notverysecret',
