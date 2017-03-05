@@ -24,7 +24,8 @@ class bacula::director::postgresql (
       password => postgresql_password($db_user, $db_pw),
       encoding => 'SQL_ASCII',
       locale   => 'C',
-      before   => Exec["/bin/sh ${make_bacula_tables}"]
+      before   => Exec["/bin/sh ${make_bacula_tables}"],
+      notify   => Exec["/bin/sh ${make_bacula_tables}"],
     }
   }
 
@@ -32,7 +33,6 @@ class bacula::director::postgresql (
     user        => $user,
     refreshonly => true,
     environment => ["db_name=${db_name}"],
-    subscribe   => Postgresql::Server::Db[$db_name],
     notify      => Service[$services],
   }
 }
