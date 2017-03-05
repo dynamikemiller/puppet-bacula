@@ -14,10 +14,11 @@
 #  keyfile_source  => '/etc/dehydrated/keyfile.pem',
 #  cafile_source   => '/etc/dehydrated/cafile.pem',
 #}
-
 #
 # @example in hiera
 #   TODO
+#
+# TODO make DH key length configurable
 #
 class bacula::ssl (
   #Optional[String] $certfile = undef,
