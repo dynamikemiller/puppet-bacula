@@ -31,15 +31,15 @@
 # TODO director_address is only used by bconsole, and is confusing as director is likely the same 
 #
 class bacula::director (
-  $db_type,
+  String $db_type,
   $messages,
   Array $packages,
   String $services,
   Boolean $manage_db   = true,
-  $conf_dir            = $bacula::conf_dir,
-  $db_name             = 'bacula',
-  $db_pw               = 'notverysecret',
-  $db_user             = 'bacula',
+  String $conf_dir     = $bacula::conf_dir,
+  String $db_name      = 'bacula',
+  String $db_pw        = 'notverysecret',
+  String $db_user      = 'bacula',
   $director_address    = $bacula::director_address,
   $director            = $::fqdn, # director here is not bacula::director
   $group               = $bacula::bacula_group,
