@@ -13,6 +13,8 @@ move bacula::params::ssl to bacula::use_ssl
 
 move bacula::fileset to bacula::director::fileset
 
+users are required to set baculs::ssl::ssl_dir
+
 
 
 
