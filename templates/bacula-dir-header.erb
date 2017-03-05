@@ -15,7 +15,7 @@ Director {                # define myself
 <%= scope.function_template(['bacula/_sslkeypair.erb']) %>
 <% if scope.lookupvar('bacula::params::ssl') -%>
     TLS Verify Peer         = yes
-    TLS DH File             = <%= @conf_dir %>/ssl/dh1024.pem
+    TLS DH File             = <%= @conf_dir %>/ssl/dh2048.pem
 <% end -%>
 }
 
