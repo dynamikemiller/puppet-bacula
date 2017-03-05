@@ -10,7 +10,7 @@ class bacula::director::postgresql (
   String $db_name            = $bacula::director::db_name,
   String $db_pw              = $bacula::director::db_pw,
   String $db_user            = $bacula::director::db_user,
-) inherits ::bacula::director {
+) {
 
   include ::bacula
 
@@ -24,6 +24,7 @@ class bacula::director::postgresql (
       password => postgresql_password($db_user, $db_pw),
       encoding => 'SQL_ASCII',
       locale   => 'C',
+      before   => Exec["/bin/sh ${make_bacula_tables}"]
     }
   }
 
@@ -33,8 +34,5 @@ class bacula::director::postgresql (
     environment => ["db_name=${db_name}"],
     subscribe   => Postgresql::Server::Db[$db_name],
     notify      => Service[$services],
-    require     => [
-      Postgresql::Server::Db[$db_name],
-    ],
   }
 }

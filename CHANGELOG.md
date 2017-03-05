@@ -11,6 +11,10 @@ move bacula::params::defive_seltype to bacula class
 
 move bacula::params::ssl to bacula::use_ssl
 
+move bacula::fileset to bacula::director::fileset
+
+
+
 
 
 
