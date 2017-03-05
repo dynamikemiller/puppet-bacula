@@ -41,8 +41,8 @@ class bacula::director (
   String $db_name             = 'bacula',
   String $db_pw               = 'notverysecret',
   String $db_user             = 'bacula',
-  Optiona[String] $db_address = undef,
-  Optiona[String] $db_port    = undef,
+  Optional[String] $db_address = undef,
+  Optional[String] $db_port    = undef,
   $director_address           = $bacula::director_address,
   $director                   = $trusted['certname'], # director here is not bacula::director
   $group                      = $bacula::bacula_group,
