@@ -124,16 +124,18 @@ class bacula::director (
 
   create_resources(bacula::messages, $messages)
 
-  Bacula::Director::Pool <<||>> { conf_dir => $conf_dir }
-  Bacula::Director::Storage <<| tag == "bacula-${storage}" |>> { conf_dir => $conf_dir }
+  Bacula::Director::Storage <<| tag == "bacula-${director}" |>> { conf_dir => $conf_dir }
   Bacula::Director::Client <<| tag == "bacula-${director}" |>> { conf_dir => $conf_dir }
 
   if !empty($job_tag) {
     Bacula::Director::Fileset <<| tag == "bacula-${director}" |>> { conf_dir => $conf_dir }
     Bacula::Director::Job <<| tag == $job_tag |>> { conf_dir => $conf_dir }
+    # TODO tag pool resources on export when job_tag is defined
+    Bacula::Director::Pool <<|tag == $job_tag |>> { conf_dir => $conf_dir }
   } else {
     Bacula::Director::Fileset <<||>> { conf_dir => $conf_dir }
     Bacula::Director::Job <<||>> { conf_dir => $conf_dir }
+    Bacula::Director::Pool <<||>> { conf_dir => $conf_dir }
   }
 
   Concat::Fragment <<| tag == "bacula-${director}" |>>

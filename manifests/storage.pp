@@ -116,6 +116,6 @@ class bacula::storage (
     device_name   => $device_name,
     media_type    => $media_type,
     maxconcurjobs => $maxconcurjobs,
-    tag           => "bacula-${storage}",
+    tag           => "bacula-${director_name}",
   }
 }
