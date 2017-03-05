@@ -5,7 +5,6 @@
 class bacula::common {
 
   include ::bacula
-  include ::bacula::ssl
   include ::bacula::client
 
   $conf_dir        = $::bacula::conf_dir
