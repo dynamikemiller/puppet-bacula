@@ -62,7 +62,7 @@ class bacula::storage (
     require => Package[$package_names],
   }
 
-  if $::bacula::use_ssl {
+  if $::bacula::use_ssl == true {
     include ::bacula::ssl
     Service[$services] {
       subscribe => File[$::bacula::ssl::ssl_files],

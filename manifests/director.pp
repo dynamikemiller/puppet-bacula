@@ -84,7 +84,7 @@ class bacula::director (
     require => Package[$package_names],
   }
 
-  if $::bacula::use_ssl {
+  if $::bacula::use_ssl == true {
     include ::bacula::ssl
     Service[$services] {
       subscribe => File[$::bacula::ssl::ssl_files],
@@ -169,7 +169,6 @@ class bacula::director (
 
   bacula::job { 'RestoreFiles':
     jobtype  => 'Restore',
-    fileset  => false,
     jobdef   => false,
     messages => 'Standard',
   }
