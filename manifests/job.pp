@@ -48,10 +48,10 @@
 #   }
 #
 define bacula::job (
-  Array $files              = [],
-  Array $excludes           = [],
-  Bacula::JobType $jobtype  = 'Backup',
+  Optional[Array] $files    = undef,
+  Optional[Array] $excludes = undef,
   Optional[String] $fileset = undef,
+  Bacula::JobType $jobtype  = 'Backup',
   $template                 = 'bacula/job.conf.erb',
   $pool                     = $bacula::client::default_pool,
   $pool_full                = $bacula::client::default_pool_full,
@@ -77,30 +77,33 @@ define bacula::job (
   include ::bacula
   $conf_dir = $bacula::conf_dir
 
-  # if the fileset is not defined, we fall back to one called "Common"
-  if is_string($fileset) {
-    $fileset_real = $fileset
-  } elsif $fileset == true {
-    if $files == '' { err('you tell me to create a fileset, but no files given') }
-    $fileset_real = $name
-
-    @@bacula::director::fileset { $name:
-      files    => $files,
-      excludes => $excludes,
-    }
-
-  } else {
-    $fileset_real = 'Common'
+  if empty($files) and ! $fileset {
+    fail('Must pass either a list of files or a fileset')
   }
 
   if empty($job_tag) {
-    $real_tags = "bacula-${::bacula::director}"
+    $resource_tags = "bacula-${::bacula::director}"
   } else {
-    $real_tags = ["bacula-${::bacula::director}", $job_tag]
+    $resource_tags = ["bacula-${::bacula::director}", $job_tag]
+  }
+
+  if $fileset {
+    $fileset_real = $fileset
+  } else {
+    if $files or $excludes {
+      $fileset_real = $name
+      @@bacula::director::fileset { $name:
+        files    => $files,
+        excludes => $excludes,
+        tag      => $resource_tags,
+      }
+    } else {
+      $fileset_real = 'Common'
+    }
   }
 
   @@bacula::director::job { $name:
     content => template($template),
-    tag     => $real_tags,
+    tag     => $resource_tags,
   }
 }

@@ -17,7 +17,7 @@ define bacula::director::fileset (
   Array $files,
   String $conf_dir              = $::bacula::conf_dir,
   String $director              = $::bacula::client::director,
-  Array $excludes               = [],
+  Optional[Array] $excludes     = [],
   Hash[String, String] $options = {
     'signature'   => 'SHA1',
     'compression' => 'GZIP9',

@@ -123,7 +123,7 @@ class bacula::director (
   }
 
   create_resources(bacula::messages, $messages)
-
+  # Realize any clients or storage that have the same director specified
   Bacula::Director::Storage <<| tag == "bacula-${director}" |>> { conf_dir => $conf_dir }
   Bacula::Director::Client <<| tag == "bacula-${director}" |>> { conf_dir => $conf_dir }
 
@@ -171,5 +171,6 @@ class bacula::director (
     jobtype  => 'Restore',
     jobdef   => false,
     messages => 'Standard',
+    fileset  => 'Common',
   }
 }
