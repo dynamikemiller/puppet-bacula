@@ -81,10 +81,12 @@ define bacula::job (
     fail('Must pass either a list of files or a fileset')
   }
 
-  if empty($job_tag) {
-    $resource_tags = "bacula-${::bacula::director}"
+  $tag_defaults = ]"bacula-${::bacula::director}"]
+
+  if $job_tag {
+    $resource_tags = $tag_defaults + [$job_tag]
   } else {
-    $resource_tags = ["bacula-${::bacula::director}", $job_tag]
+    $resource_tags = $tag_defaults
   }
 
   if $fileset {
