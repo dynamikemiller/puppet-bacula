@@ -9,5 +9,11 @@ JobDefs {
 <% if @level -%>
     Level    = <%= @level %>
 <% end -%>
+<% if @full_backup_pool -%>
+    Full Backup Pool = <%= @full_backup_pool %>
+<% end -%>
+<% if @differential_backup_pool -%>
+    Differential Backup Pool = <%= @differential_backup_pool %>
+<% end -%>
 <%= scope.function_template(['bacula/_job_reschedule.erb']) -%>
 }
