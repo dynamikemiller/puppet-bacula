@@ -57,6 +57,7 @@ define bacula::job (
   $jobdef              = 'Default',
   Array $runscript     = [],
   $level               = undef,
+  $write_bootstrap     = undef,
   $accurate            = 'no',
   $reschedule_on_error = false,
   $reschedule_interval = '1 hour',

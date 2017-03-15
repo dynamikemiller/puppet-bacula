@@ -22,6 +22,7 @@ define bacula::jobdefs (
   $full_backup_pool         = undef,
   $differential_backup_pool = undef,
   $level                    = undef,
+  $write_bootstrap          = undef,
   $accurate                 = 'no',
   $reschedule_on_error      = false,
   $reschedule_interval      = '1 hour',
